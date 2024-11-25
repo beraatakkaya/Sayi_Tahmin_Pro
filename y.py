@@ -83,8 +83,6 @@ class Window(QMainWindow):
         super().__init__()
         self.artilar = 0
         self.eksiler = 0
-        self.tahmin_sayisi = 0
-        self.tahmin_labels = []
         self.initUI()
 
     def initUI(self):
@@ -130,24 +128,11 @@ class Window(QMainWindow):
         self.label_eksiler.setText(f"-{self.eksiler}")
 
     def tahmin_yap(self):
-        self.tahmin_sayisi += 1
         if len(self.sayi_listesi) == 0:
             QMessageBox.critical(self, "Oyun Bitti", "Olası sayı kalmadı!")
             return
         self.tahmin = random.choice(self.sayi_listesi)
-
-        # Tahminlerin gösterilmesi
-        tahmin_baslik = QLabel(f"{self.tahmin_sayisi}. Tahmin:", self)
-        tahmin_baslik.setFont(QFont('Arial', 16))
-        tahmin_baslik.setStyleSheet("color: white;")
-        tahmin_baslik.setGeometry(20, 50 * self.tahmin_sayisi, 120, 30)
-        tahmin_baslik.show()
-
-        for i, rakam in enumerate(self.tahmin):
-            tahmin_label = CustomLabel(rakam, self)
-            tahmin_label.setGeometry(150 + i * 50, 50 * self.tahmin_sayisi, 40, 40)
-            tahmin_label.show()
-            self.tahmin_labels.append(tahmin_label)
+        print(f"Tahmin edilen sayı: {self.tahmin}")
 
     def sayi_eleme(self):
         yeni_liste = []
@@ -167,11 +152,7 @@ class Window(QMainWindow):
     def retry(self):
         self.artilar = 0
         self.eksiler = 0
-        self.tahmin_sayisi = 0
         self.sayi_listesi = [str(i) for i in range(1000, 10000) if len(set(str(i))) == 4]
-        for label in self.tahmin_labels:
-            label.deleteLater()
-        self.tahmin_labels = []
         self.tahmin_yap()
 
 
